@@ -1,219 +1,398 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
+<meta charset="UTF-8" />
 <title>For My Queen 👑</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
 <style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Segoe UI',sans-serif;
-}
+*{ box-sizing:border-box; }
 
 body{
-    height:100vh;
-    background:linear-gradient(135deg,#ff4d6d,#ff758f,#ffb3c6);
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    overflow:hidden;
+  margin:0;
+  min-height:100vh;
+  background:linear-gradient(135deg,#ff4d6d,#ff9a9e,#ffc3a0);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-family:'Segoe UI',sans-serif;
+  overflow:hidden;
+  padding:18px;
 }
 
+/* CARD */
 .card{
-    background:#fff;
-    width:90%;
-    max-width:380px;
-    padding:30px 20px;
-    border-radius:25px;
-    text-align:center;
-    box-shadow:0 20px 40px rgba(0,0,0,.3);
-    animation:pop .5s ease;
+  width:94%;
+  max-width:440px;
+  max-height:95vh;
+  background:#fff;
+  border-radius:22px;
+  padding:20px;
+  text-align:center;
+  box-shadow:0 20px 45px rgba(0,0,0,0.25);
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+  position:relative;
 }
 
-@keyframes pop{
-    from{transform:scale(.8);opacity:0}
-    to{transform:scale(1);opacity:1}
+/* TEXT */
+h1,h2{
+  color:#ff2f5b;
+  font-size:22px;
+  margin:10px 0;
 }
-
-.step{
-    font-size:13px;
-    color:#888;
-    margin-bottom:10px;
-}
-
-h1{
-    color:#ff4d6d;
-    margin-bottom:15px;
-}
-
 p{
-    color:#444;
-    font-size:16px;
-    line-height:1.5;
-    margin-bottom:25px;
+  font-size:16px;
+  line-height:1.7;
+  margin:10px 0;
+}
+.emoji{font-size:26px}
+.note{font-size:13px;opacity:0.75;margin-top:8px}
+
+/* BUTTONS */
+.btn{
+  display:block;
+  width:100%;
+  margin:12px 0;
+  padding:14px 0;
+  font-size:17px;
+  border:none;
+  border-radius:30px;
+  cursor:pointer;
+  font-weight:800;
+}
+.yes{background:#ff2f5b;color:#fff;}
+.no{background:#e5e5e5;color:#555;}
+
+/* NO BUTTON BHAGNA */
+.runaway{ position:relative; }
+
+/* QUIZ */
+.quizBox{
+  margin-top:16px;
+  padding:14px;
+  background: rgba(255,47,91,0.06);
+  border: 1px solid rgba(255,47,91,0.16);
+  border-radius:18px;
+  text-align:left;
+}
+.qTitle{
+  font-weight:900;
+  margin-bottom:10px;
+  color:#111;
+  font-size:15px;
+}
+.opt{
+  padding:12px;
+  border-radius:14px;
+  background:#fff;
+  border:1px solid rgba(0,0,0,0.08);
+  cursor:pointer;
+  font-weight:800;
+  margin-bottom:10px;
+  transition:0.18s ease;
+}
+.opt:hover{ transform: translateY(-1px); }
+
+/* GIFT */
+.gift{
+  width:120px;
+  height:120px;
+  margin:20px auto;
+  background:#ff2f5b;
+  border-radius:16px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#fff;
+  font-size:46px;
+  cursor:pointer;
+  animation:pulse 1.3s infinite;
+  user-select:none;
+}
+@keyframes pulse{
+  0%{transform:scale(1);}
+  50%{transform:scale(1.1);}
+  100%{transform:scale(1);}
 }
 
-.buttons{
-    display:flex;
-    gap:15px;
+/* PHOTOS */
+.photo-wrap{
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+  margin-top:16px;
+}
+.photo-wrap img{
+  width:100%;
+  max-height:75vh;
+  object-fit:contain;
+  border-radius:18px;
+  background:#000;
 }
 
-button{
-    flex:1;
-    padding:12px 0;
-    border:none;
-    border-radius:30px;
-    font-size:16px;
-    cursor:pointer;
+/* FIREWORKS */
+.firework{
+  position:absolute;
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  animation:explode 1.2s ease-out forwards;
+  pointer-events:none;
+  z-index:9999;
 }
-
-#yes{
-    background:#ff4d6d;
-    color:#fff;
-}
-
-#no{
-    background:#eee;
-    color:#333;
-    position:relative;
-}
-
-.loading,
-.result{
-    display:none;
-}
-
-.loader{
-    width:60px;
-    height:60px;
-    border:6px solid #eee;
-    border-top:6px solid #ff4d6d;
-    border-radius:50%;
-    animation:spin 1s linear infinite;
-    margin:20px auto;
-}
-
-@keyframes spin{
-    from{transform:rotate(0)}
-    to{transform:rotate(360deg)}
-}
-
-.heart{
-    position:fixed;
-    bottom:-20px;
-    font-size:20px;
-    animation:float 4s linear infinite;
-}
-
-@keyframes float{
-    0%{transform:translateY(0);opacity:1}
-    100%{transform:translateY(-100vh);opacity:0}
+@keyframes explode{
+  to{
+    transform:translate(var(--x),var(--y));
+    opacity:0;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<!-- QUESTION CARD -->
-<div class="card" id="card">
-    <div class="step" id="step">Question 1 / 10</div>
-    <h1 id="question">Can I ask you something, Queen? 👑</h1>
-
-    <div class="buttons">
-        <button id="yes">Yes 😊</button>
-        <button id="no">No 🙃</button>
-    </div>
-</div>
-
-<!-- FAKE LOADING -->
-<div class="card loading" id="loading">
-    <h1>Please wait Queen 👑</h1>
-    <p>Checking something special for you…</p>
-    <div class="loader"></div>
-</div>
-
-<!-- FINAL RESULT -->
-<div class="card result" id="result">
-    <h1>My Queen 👑❤️</h1>
-    <p style="font-size:18px; line-height:1.6;">
-        From the first smile to this very moment,<br>
-        you slowly became my favorite thought,<br>
-        my comfort, my happiness… my home. 🫶<br><br>
-
-        I don’t want a perfect story,<br>
-        I just want <b>you</b> in every chapter of my life. 💍<br><br>
-
-        Will you be mine forever, Queen? ❤️
-    </p>
-</div>
+<div class="card" id="box"></div>
 
 <script>
-const questions = [
- "Can I ask you something, Queen? 👑",
- "Do you trust me? 😊",
- "Do you smile when you see my name? 😌",
- "Do I matter to you? 💭",
- "Can I stay with you always? 🤍",
- "Will you hold my hand in tough times? 🤝",
- "Can I make you laugh every day? 😄",
- "Do you feel safe with me, Queen? 🫶",
- "Can I call you mine? 💖",
- "One last thing Queen… ready? 👀"
+/* ✅ Firebase Realtime Database URL (your URL) */
+const DB_URL = "https://for-my-6540f-default-rtdb.firebaseio.com";
+
+/* ✅ Unique visitor id */
+const visitorId = localStorage.getItem("visitorId") || ("v_" + Math.random().toString(16).slice(2));
+localStorage.setItem("visitorId", visitorId);
+
+/* ✅ Track anything (clicks + quiz answers) */
+function track(type, page, value){
+  const data = {
+    visitorId,
+    type,       // "click" or "quiz"
+    page,
+    value,
+    time: new Date().toISOString(),
+    userAgent: navigator.userAgent
+  };
+
+  fetch(`${DB_URL}/clicks.json`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data)
+  }).catch(()=>{});
+}
+
+/* 🎆 FIREWORKS */
+function fireworks(){
+  for(let i=0;i<6;i++){
+    setTimeout(()=>{
+      const x = Math.random() * window.innerWidth;
+      const y = Math.random() * (window.innerHeight/2);
+
+      for(let j=0;j<28;j++){
+        const f = document.createElement("div");
+        f.className = "firework";
+        f.style.left = x + "px";
+        f.style.top  = y + "px";
+        f.style.background = `hsl(${Math.random()*360},100%,60%)`;
+        f.style.setProperty("--x", (Math.random()*220-110) + "px");
+        f.style.setProperty("--y", (Math.random()*220-110) + "px");
+        document.body.appendChild(f);
+        setTimeout(()=>f.remove(), 1200);
+      }
+    }, i*420);
+  }
+}
+
+/* NO BUTTON BHAGNA */
+function runaway(btn){
+  track("click","NoButton","RUNAWAY");
+  btn.style.transform = `translate(${Math.random()*60-30}px,${Math.random()*28}px)`;
+}
+
+const box = document.getElementById("box");
+let loveNoUsed = false;
+
+/* Quiz */
+let qIndex = 0;
+const quiz = [
+  { q:"Tumhari favourite vibe? 🌸", a:["Cute", "Romantic", "Both 💖"] },
+  { q:"First date idea? 😳", a:["Ice cream 🍦", "Coffee ☕", "Long walk 🚶‍♀️"] },
+  { q:"Tumhe kya pasand? 🤍", a:["Respect", "Care", "Loyalty"] },
+  { q:"One word for me? 😅", a:["Sweet", "Cute", "Different ✨"] }
 ];
 
-let index = 0;
+/* PAGE 1 */
+function page1(){
+  box.innerHTML = `
+    <h2>Kya main tumhare liye special hoon? 🤍</h2>
+    <p class="emoji">🌸✨</p>
 
-const q = document.getElementById("question");
-const step = document.getElementById("step");
-const yesBtn = document.getElementById("yes");
-const noBtn = document.getElementById("no");
-const card = document.getElementById("card");
-const loading = document.getElementById("loading");
-const result = document.getElementById("result");
+    <button class="btn yes" onclick="track('click','Page1','YES'); page2()">YES</button>
+    <button class="btn no runaway" onclick="track('click','Page1','NO'); runaway(this)">NO</button>
 
-yesBtn.onclick = () => {
-    index++;
-    hearts(false);
-
-    if(index < questions.length){
-        q.innerText = questions[index];
-        step.innerText = `Question ${index+1} / 10`;
-    }else{
-        card.style.display="none";
-        loading.style.display="block";
-
-        setTimeout(()=>{
-            loading.style.display="none";
-            result.style.display="block";
-            hearts(true);
-        },3000);
-    }
-};
-
-noBtn.onclick = () => {
-    const x = Math.random()*200 - 100;
-    const y = Math.random()*200 - 100;
-    noBtn.style.transform = `translate(${x}px,${y}px)`;
-};
-
-function hearts(final){
-    const count = final ? 25 : 6;
-    for(let i=0;i<count;i++){
-
-        const h=document.createElement("div");
-        h.className="heart";
-        h.innerHTML="❤️";
-        h.style.left=Math.random()*100+"vw";
-        h.style.fontSize=(Math.random()*20+12)+"px";
-        document.body.appendChild(h);
-        setTimeout(()=>h.remove(),4000);
-    }
+    <p class="note">(Answer honestly 🤍)</p>
+  `;
 }
+
+/* PAGE 2 */
+function page2(){
+  box.innerHTML = `
+    <h2>Kya tum mujhe apni life me jagah de sakti ho? 🌷</h2>
+    <p class="emoji">🤍🫶</p>
+
+    <button class="btn yes" onclick="track('click','Page2','YES'); quizPage()">YES</button>
+    <button class="btn no runaway" onclick="track('click','Page2','NO'); runaway(this)">NO</button>
+  `;
+}
+
+/* QUIZ PAGE */
+function quizPage(){
+  qIndex = 0;
+  track("click","QuizPage","OPEN");
+  renderQuiz();
+}
+
+function renderQuiz(){
+  const q = quiz[qIndex];
+
+  box.innerHTML = `
+    <h2>Mini Quiz Time 😳</h2>
+    <p>Bas fun hai… but answers cute hain 💖</p>
+    <p class="emoji">📝✨</p>
+
+    <div class="quizBox">
+      <div class="qTitle">Q${qIndex+1}. ${q.q}</div>
+      <div id="opts"></div>
+    </div>
+
+    <p class="note">Tap one option 👆</p>
+  `;
+
+  const opts = document.getElementById("opts");
+
+  q.a.forEach(ans=>{
+    const div = document.createElement("div");
+    div.className = "opt";
+    div.innerText = ans;
+    div.onclick = ()=>{
+      track("quiz", `Q${qIndex+1}`, ans);
+
+      qIndex++;
+      if(qIndex >= quiz.length){
+        loveQ();
+      }else{
+        renderQuiz();
+      }
+    };
+    opts.appendChild(div);
+  });
+}
+
+/* LOVE QUESTION */
+function loveQ(){
+  box.innerHTML = `
+    <h2>Do you like me? 🤍</h2>
+    <p class="emoji">❤️‍🩹✨</p>
+
+    <button class="btn yes" onclick="track('click','LoveQ','YES'); giftPage()">YES</button>
+    <button class="btn no runaway" id="noLoveBtn">NO</button>
+
+    <p class="note">(No pressure 🤍)</p>
+  `;
+
+  const n = document.getElementById("noLoveBtn");
+  n.onclick = ()=>{
+    track("click","LoveQ","NO");
+    if(!loveNoUsed){
+      loveNoUsed = true;
+      n.innerText = "NO 😔";
+      n.style.background = "#ccc";
+      runaway(n);
+    }else{
+      n.disabled = true;
+      n.style.opacity = "0.6";
+    }
+  };
+
+  // also run away on hover (desktop)
+  n.addEventListener("mouseenter", ()=>runaway(n));
+}
+
+/* GIFT */
+function giftPage(){
+  box.innerHTML = `
+    <h2>Tap the Gift 🎁</h2>
+    <p class="emoji">🤍✨</p>
+    <div class="gift" onclick="track('click','Gift','OPEN'); finalWish()">🎁</div>
+    <p class="note">(Secret inside 😳)</p>
+  `;
+}
+
+/* FINAL */
+function finalWish(){
+  box.innerHTML = `
+    <h1>For My Queen 👑💖</h1>
+    <p>
+      Main tumhe impress nahi…<br>
+      respect aur care dena chahta hoon 🤍<br><br>
+      <b>Will you be mine? 💍</b>
+    </p>
+
+    <button class="btn yes" onclick="track('click','Final','YES'); yesAccepted()">YES ❤️</button>
+    <button class="btn no runaway" onclick="track('click','Final','NO'); runaway(this); noAccepted()">NO</button>
+
+    <p class="emoji">💖✨</p>
+  `;
+}
+
+/* YES */
+function yesAccepted(){
+  fireworks();
+  track("click","Fireworks","START");
+
+  box.innerHTML = `
+    <h1>She said YES 💖✨</h1>
+    <p class="emoji">🥺❤️</p>
+    <p>
+      Thank you… ab tum meri ho 🤍<br><br>
+      (✅ Tumhare clicks + quiz answers save ho gaye)
+    </p>
+
+    <button class="btn yes" onclick="track('click','Photos','OPEN'); showPhotos()">Tap to see memories 📸🤍</button>
+    <p class="emoji">🎉✨👑</p>
+  `;
+}
+
+/* PHOTOS PAGE */
+function showPhotos(){
+  fireworks();
+
+  box.innerHTML = `
+    <h2>Memories 📸🤍</h2>
+    <p class="emoji">🌙✨</p>
+
+    <div class="photo-wrap">
+      <img src="1.jpg" alt="photo 1">
+      <img src="2.jpg" alt="photo 2">
+      <img src="3.jpg" alt="photo 3">
+    </div>
+
+    <p class="emoji">💖👑✨</p>
+  `;
+}
+
+/* NO */
+function noAccepted(){
+  box.innerHTML = `
+    <h2>It’s okay 🤍</h2>
+    <p class="emoji">🌙</p>
+    <p>Main tumhari choice respect karta hoon 🤝</p>
+    <button class="btn yes" onclick="track('click','Back','Restart'); page1()">Go back</button>
+  `;
+}
+
+/* START */
+page1();
 </script>
 
 </body>
 </html>
- 
