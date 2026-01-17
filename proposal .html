@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>For My Queen 👑</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    height:100vh;
+    background:linear-gradient(135deg,#ff4d6d,#ff758f,#ffb3c6);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
+}
+
+.card{
+    background:#fff;
+    width:90%;
+    max-width:380px;
+    padding:30px 20px;
+    border-radius:25px;
+    text-align:center;
+    box-shadow:0 20px 40px rgba(0,0,0,.3);
+    animation:pop .5s ease;
+}
+
+@keyframes pop{
+    from{transform:scale(.8);opacity:0}
+    to{transform:scale(1);opacity:1}
+}
+
+.step{
+    font-size:13px;
+    color:#888;
+    margin-bottom:10px;
+}
+
+h1{
+    color:#ff4d6d;
+    margin-bottom:15px;
+}
+
+p{
+    color:#444;
+    font-size:16px;
+    line-height:1.5;
+    margin-bottom:25px;
+}
+
+.buttons{
+    display:flex;
+    gap:15px;
+}
+
+button{
+    flex:1;
+    padding:12px 0;
+    border:none;
+    border-radius:30px;
+    font-size:16px;
+    cursor:pointer;
+}
+
+#yes{
+    background:#ff4d6d;
+    color:#fff;
+}
+
+#no{
+    background:#eee;
+    color:#333;
+    position:relative;
+}
+
+.loading,
+.result{
+    display:none;
+}
+
+.loader{
+    width:60px;
+    height:60px;
+    border:6px solid #eee;
+    border-top:6px solid #ff4d6d;
+    border-radius:50%;
+    animation:spin 1s linear infinite;
+    margin:20px auto;
+}
+
+@keyframes spin{
+    from{transform:rotate(0)}
+    to{transform:rotate(360deg)}
+}
+
+.heart{
+    position:fixed;
+    bottom:-20px;
+    font-size:20px;
+    animation:float 4s linear infinite;
+}
+
+@keyframes float{
+    0%{transform:translateY(0);opacity:1}
+    100%{transform:translateY(-100vh);opacity:0}
+}
+</style>
+</head>
+
+<body>
+
+<!-- QUESTION CARD -->
+<div class="card" id="card">
+    <div class="step" id="step">Question 1 / 10</div>
+    <h1 id="question">Can I ask you something, Queen? 👑</h1>
+
+    <div class="buttons">
+        <button id="yes">Yes 😊</button>
+        <button id="no">No 🙃</button>
+    </div>
+</div>
+
+<!-- FAKE LOADING -->
+<div class="card loading" id="loading">
+    <h1>Please wait Queen 👑</h1>
+    <p>Checking something special for you…</p>
+    <div class="loader"></div>
+</div>
+
+<!-- FINAL RESULT -->
+<div class="card result" id="result">
+    <h1>My Queen 👑❤️</h1>
+    <p style="font-size:18px; line-height:1.6;">
+        From the first smile to this very moment,<br>
+        you slowly became my favorite thought,<br>
+        my comfort, my happiness… my home. 🫶<br><br>
+
+        I don’t want a perfect story,<br>
+        I just want <b>you</b> in every chapter of my life. 💍<br><br>
+
+        Will you be mine forever, Queen? ❤️
+    </p>
+</div>
+
+<script>
+const questions = [
+ "Can I ask you something, Queen? 👑",
+ "Do you trust me? 😊",
+ "Do you smile when you see my name? 😌",
+ "Do I matter to you? 💭",
+ "Can I stay with you always? 🤍",
+ "Will you hold my hand in tough times? 🤝",
+ "Can I make you laugh every day? 😄",
+ "Do you feel safe with me, Queen? 🫶",
+ "Can I call you mine? 💖",
+ "One last thing Queen… ready? 👀"
+];
+
+let index = 0;
+
+const q = document.getElementById("question");
+const step = document.getElementById("step");
+const yesBtn = document.getElementById("yes");
+const noBtn = document.getElementById("no");
+const card = document.getElementById("card");
+const loading = document.getElementById("loading");
+const result = document.getElementById("result");
+
+yesBtn.onclick = () => {
+    index++;
+    hearts(false);
+
+    if(index < questions.length){
+        q.innerText = questions[index];
+        step.innerText = `Question ${index+1} / 10`;
+    }else{
+        card.style.display="none";
+        loading.style.display="block";
+
+        setTimeout(()=>{
+            loading.style.display="none";
+            result.style.display="block";
+            hearts(true);
+        },3000);
+    }
+};
+
+noBtn.onclick = () => {
+    const x = Math.random()*200 - 100;
+    const y = Math.random()*200 - 100;
+    noBtn.style.transform = `translate(${x}px,${y}px)`;
+};
+
+function hearts(final){
+    const count = final ? 25 : 6;
+    for(let i=0;i<count;i++){
+
+        const h=document.createElement("div");
+        h.className="heart";
+        h.innerHTML="❤️";
+        h.style.left=Math.random()*100+"vw";
+        h.style.fontSize=(Math.random()*20+12)+"px";
+        document.body.appendChild(h);
+        setTimeout(()=>h.remove(),4000);
+    }
+}
+</script>
+
+</body>
+</html>
+ 
